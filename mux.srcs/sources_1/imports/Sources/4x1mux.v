@@ -1,18 +1,29 @@
-module mux_4to1_case ( input [3:0] a,                 // 4-bit input called a  
-                       input [3:0] b,                 // 4-bit input called b  
-                       input [3:0] c,                 // 4-bit input called c  
-                       input [3:0] d,                 // 4-bit input called d  
-                       input [1:0] sel,               // input sel used to select between a,b,c,d  
-                       output reg [3:0] out);         // 4-bit output based on input sel  
-  
-   // This always block gets executed whenever a/b/c/d/sel changes value  
-   // When it happens, output is assigned to either a/b/c/d  
-   always @ (a or b or c or d or sel) begin  
-      case (sel)  
-         2'b00 : out <= a;  
-         2'b01 : out <= b;  
-         2'b10 : out <= c;  
-         2'b11 : out <= d;  
-      endcase  
-   end  
-endmodule  
+module Demultiplexer_1_to_4_case (Y, A, din);
+output reg [3:0] Y;
+input [1:0] A;
+input din;
+  always @(Y, A) begin  
+    case (A)
+      2'b00 : begin 
+         Y[0] = din; Y[3:1] = 0;
+        end
+2'b01 : begin 
+         Y[1] = din; Y[0]   = 0; 
+        end
+2'b10 : begin 
+         Y[2] = din; Y[1:0] = 0; 
+        end
+2'b11 : begin 
+         Y[3] = din; Y[2:0] = 0;
+        end
+endcase
+    module Demultiplexer_1_to_4_case (output reg [3:0] Y, input [1:0] A, input din);
+always @(Y, A) begin
+    case (A)
+        2'b00 : begin Y[0] = din; Y[3:1] = 0; end
+        2'b01 : begin Y[1] = din; Y[0] = 0;   end
+        2'b10 : begin Y[2] = din; Y[1:0] = 0; end
+        2'b11 : begin Y[3] = din; Y[2:0] = 0; end
+    endcase   
+end
+endmodule
