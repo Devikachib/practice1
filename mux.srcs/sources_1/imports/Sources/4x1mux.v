@@ -1,18 +1,15 @@
-module mux_4to1_case ( input [3:0] a,                 // 4-bit input called a  
-                       input [3:0] b,                 // 4-bit input called b  
-                       input [3:0] c,                 // 4-bit input called c  
-                       input [3:0] d,                 // 4-bit input called d  
-                       input [1:0] sel,               // input sel used to select between a,b,c,d  
-                       output reg [3:0] out);         // 4-bit output based on input sel  
+module counter (input clk,      // Declare input port for the clock to allow counter to count up  
+                  input rstn,              // Declare input port for the reset to allow the counter to be reset to 0 when required  
+                  output reg[3:0] out);    // Declare 4-bit output port to get the counter values  
   
-   // This always block gets executed whenever a/b/c/d/sel changes value  
-   // When it happens, output is assigned to either a/b/c/d  
-   always @ (a or b or c or d or sel) begin  
-      case (sel)  
-         2'b00 : out <= a;  
-         2'b01 : out <= b;  
-         2'b10 : out <= c;  
-         2'b11 : out <= d;  
-      endcase  
-   end  
+ // This always block will be triggered at the rising edge of clk (0->1)  
+  // Once inside this block, it checks if the reset is 0, then change out to zero   
+  // If reset is 1, then the design should be allowed to count up, so increment the counter   
+  
+  always @ (posedge clk) begin  
+    if (! rstn)  
+      out <= 0;  
+    else  
+      out <= out + 1;  
+  end  
 endmodule  
